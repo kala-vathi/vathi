@@ -1,0 +1,379 @@
+	 t
+	 Flow:
+=> User types command   
+=> Shell interprets it
+=> Uses system libraries
+=> Sends request to kernel (system call)
+=> Kernel reads file from disk
+
+	   LINUX COMMANDS
+	
+	SYSTEM INFORMATION
+		-> uname -a
+			Outputs: Linux ubuntu 5.15.0-84-generic ...
+		-> hostname
+				Outputs: my-computer-name
+		-> df -h
+			Shows disk usage in human-readable format.
+		-> free -h
+			Shows memory and swap usage.
+		-> top 
+			dynamic view of the system processes	2
+			
+		Use df when you want to know:
+ubun
+"How much free space is left on my disk?"
+
+"What is the usage percentage of my partitions?"
+
+		Use du when you want to know:
+
+"Which folders/files are taking up space?"
+
+"Where can I clean up to free disk space?"
+
+
+	ifconfig
+--------------------------------------------------------------------------------------------------------------------
+	LINUX COMMANDS FOR FILE CREATION
+	
+		-> touch filename.txt     
+			Creates an empty file (or updates timestamp if it exists)
+			
+		-> cat > file.txt
+			Start typing content, then press Ctrl+D to save
+			
+		-> cat >> file.txt
+			Appends typed input to file
+			
+		-> vi file.txt
+			Starts vi (classic text editor)
+			
+		-> touch file{1..5}.txt
+			Creates file1.txt to file5.txt
+---------------------------------------------------------------------------------------------------------------------			
+	LINUX COMMANDS FOR DIRECTORY CREATION
+	
+		-> mkdir mydir
+			Creates a directory named mydir in the current path
+		-> mkdir dir1 dir2 dir3
+			Creates multiple directories in one line
+		-> mkdir -p parent/child/grandchild
+			Creates nested directories, no error if intermediate directories don't exist
+		-> mkdir dir1 {1..n}
+			n specific no.of directories will created. 
+
+---------------------------------------------------------------------------------------------------------------------
+	FILE AND DIRECTORY OPERATIONS
+		-> ls
+			ls -l (long format)
+			ls -a (show hidden)
+			-rw-r--r--  1  ubuntu  ubuntu   4096  May 22 12:00  config.yml
+			
+			1. File Type & Permissions		-rw-r--r--		File type + permissions (user/group/others)
+			2. Hard Link Count					1			Number of hard links to the file
+			3. Owner (User)					ubuntu			File owner (who created it)
+			4. Group						ubuntu			Group that owns the file
+			5. File Size					4096			Size in bytes
+			6. Modification Date/Time		May 22 12:00	Last modified time
+			7. File/Dir Name				config.yml		The name of the file or directory
+---------------------------------------------------------------------------------------------------------------------
+		-> cd
+			cd [directory]
+			If no directory is specified, cd will take you to your home directory.
+		-> cd -
+			Switches to the last directory you were in.
+			Very useful for toggling between two directories.
+		-> cd ~
+			~ refers to your home directory.
+			Works in scripts and interactive shells.
+---------------------------------------------------------------------------------------------------------------------
+		-> rm
+			rm file.txt
+				Remove a single file
+				
+			rm file1.txt file2.txt file3.txt
+				Remove multiple files
+				
+			rm -r my_folder/
+				Remove a directory and its contents recursively
+			rm -rf my_folder/x
+				Remove without confirmation (forcefully)
+				⚠️ Be careful! This will delete everything inside the directory without asking.
+			rm sh* 
+				- removes file-name start with sh*
+			rm *sh
+				- removes file-name ends with sh
+			rm *sh*
+				- removes file-names containes sh in middle
+			rm -i file.txt
+				Prompt before removing each file
+			rm -d empty_folder/
+				Remove empty directory
+			rm -v file.txt
+				Verbose removal
+				Shows: removed 'file.txt'
+		note : 
+			Avoid running rm -rf / — this can delete your entire system.
+			Use -i or --interactive if you're unsure about what you're deleting.
+			Consider using trash-cli for safer deletions (moves to trash instead of permanent delete).
+-------------------------------------------------------------------------------------------------------------------]2
+		-> cp
+			Copy a file
+				cp file1.txt file2.txt
+				
+			 Copy a file to another directory
+				cp file.txt /home/user/Documents/
+				
+			Copy multiple files to a directory
+				cp file1.txt file2.txt /home/user/backup/
+			
+			Copy a directory recursively
+				cp -r myfolder /home/user/backup/
+				
+			Copy with verbose output
+				cp -v file.txt /tmp/
+-------------------------------------------------------------------------------------------------------------------
+		-> mv
+		moving files	
+			mv filename directoryname 
+		renaming files
+			mv oldname newname
+--------------------------------------------------------------------------------------------------------------------
+FILTERING COMMANDS 
+	head and tail
+		head -n file-name 
+		head -10 f1 ---> print first 10 lines
+		tail -10 f1 ---> print last 10 lines
+		head -10 f1 | tail -2 ---> print last two lines
+----------------------------------------------------------------------------------------------------------------------
+	sed -stream editor
+	It is used to:
+-> Search text
+-> Replace text
+-> Edit files
+-> Delete lines
+-> Filter output
+syntax : sed <operation> filename
+without opening the file manually.
+
+		sed 's/hai/he/g' f1.txt 
+			replaces hai with he and print
+			
+			s-subtitute
+			g- global
+			
+		sed '1s/he/hai/' f1.txt
+			replaces he with hai only first one
+			
+		sed -n '1,10p' f1.txt
+			print first 10 lines 
+			-n - supress
+		sed -n '1p' f1.txt
+			print 1st line 
+			
+		sed -i '$d' f1.txt
+			to delete the last line of the file.
+			-i - edit file directly.
+			
+			wc -l f1
+			
+		sed -i '1d' f1.txt
+			delete 1 line
+		sed -i '1,5d' f1.txt
+			delete 1-5 lines 
+		sed -i 
+		grep -i how f1.txt
+			Only lines containing "how" (in any case) are shown.
+		grep -n how f1.txt
+			it filters the given text with line number 
+		grep -o are f1.txt
+			only output the exact matching parts, not the whole line.
+		grep -v word f1>f2 
+			to copy data in file f1 except word to file f2
+----------------------------------------------------------------------------------
+	USERPERMISSION 
+	user --- r w x = 4+2+1 = 7
+	group --- r w x = 4+2+1 = 7
+	others --- r w x = 4+2+1 = 7
+	
+	default permissions of directory = 755
+	default permissions of file = 644
+		chmod a+rwx
+			This gives everyone full permissions (read, write, execute) on the specified file or directory.
+		chmod 777
+			This gives everyone full permissions (read, write, execute) on the specified file or directory.
+		chmod u+rwx	
+		chmod g+rwx
+		chmod g+rwx
+		chmod u+rwx,g+rwx,o+rwx filename
+		chmod u-rwx,g-rwx,o-rwx filename
+		
+	change owner of user and group	
+		chown hem:hem f1.txt
+		
+	Changes the owner of the file f1.txt to the user hemanth12.
+	The group ownership remains unchanged.
+		chown hemanth12 f1.txt   	
+		
+	changes only the group ownership of the file f1.txt to the group named hemanth12.
+	The user (owner) remains unchanged.
+		chown :hemanth12 f1.txt
+---------------------------------------------------------------------------------------------------------- 
+ FILE COMPRESSION
+	zip and tar
+	Compress files into a .zip archive.
+		zip dev.zip f1 f2 f3
+		unzip dev.zip
+	tar 
+	Purpose: Archive multiple files/directories into one file (called a tarball).
+	Does not compress by default — just bundles files.
+	Often combined with compression tools (gzip, bzip2, xz).
+		tar -cvf dev.tar f1 f2 f3 
+		gzip dev.tar
+		tar -xvf dev.tar
+-----------------------------------------------------------------------------------------------------------
+	user management
+	adduser 
+		ask password /bin/bash
+		wont ask password /bin/sh
+	group creation
+			groupadd grp
+			to view the groups 
+				cat /etc/group
+				cat /etc/gshadow
+				
+	adding user to group
+		gpassword -a radha grp
+		
+	multiple users to group
+		gpasswd -M radha ramana grp
+	user deletion from group
+		gpasswd -d radha grp
+	view user idsuser
+		id username 
+			give user id , primary group and secondary group
+			usermod -aG grp ramana
+				Adds the user ramana to the supplementary group grp without removing them from other groups.
+			usermod -g grp ramana
+				Changes the primary group of the user ramana to grp.
+		
+	lock the user
+		usermod -L usernamme
+		passwd -l username 
+	unlock the user
+		usermod -U username
+		passwd -u username
+	verify
+		passwd -S username
+
+---------------------------------------------------------------------------------------------------
+find particular directory or file 
+	
+	find . -type f -name nameof file -- file
+	find . -type f -name "ad-key*"
+	find . -type d -name nameofthedirectory -- directory
+
+
+relative path : starts from your current location
+absolute path : starts from the filesystem root "/"
+
+		linux directory structure
+		
+		=> / - root -> root of the file system. all files and directories starts from here.
+		
+					main gate
+					ex: c drive 
+		
+		=> /root - home directory of the root user 
+				admin home directory
+			=> /home - home directory for all users and contains user directories.
+					/home/ubuntu/.ssh/authorized_keys
+		
+		=> /bin - > essential binary executables.normal user commands
+		=> /sbin -> system binaries used by the root user.
+		=> /boot - it contains boot loader files.
+			sudo apt update && sudo apt upgrade
+			os patches
+			error: instance status check fails
+			/boot/grub/grub.cfg
+		=> /etc - all configuration files.
+				Tool Configurations- ci/cd, webserver,/etc/nginx/nginx.conf
+				/etc/docker/daemon.json
+				/etc/passwd
+		
+		=> /dev - default path storage
+		volumes like ebs
+		=> /media - mount point for usb drives dvds
+		.iso files 
+		=> /mnt - temporary mount filesystem
+				mount /dev/xvdf /mnt/data 
+				/mnt/data
+				nfs -- shared storage
+		=> /opt - third party applications 
+		=> /temp - temporary files.
+		.zip .tar
+		=> /usr - default software install
+		=> /var - variable data -  logfiles
+				log monitoring
+				tail -f /var/log/syslog 
+				/var/log/nginx/error.log
+				/var/lib/jenkins/
+		
+		=> /lib - shared libraries
+		libraries 32-bit, 64-bit
+		=> /proc - cpu info or process info
+		=> /run - runtime data for processes - process id
+		
+		to check the live data will run top and htop data will get from here
+		
+	----------------------------------------------------------------------------------------------------------------
+	tree
+	tree /
+	tree -L 1 /
+	finger user
+	which sudo 
+	hard links
+	ln f1 f2
+	
+	
+	errors : unable to locate packages
+	sudo apt update
+	cat f1>f2
+		
+		
+		
+A hard link is:
+Another name for the same original file
+Both files share:
+Same data
+Same inode
+Same storage location
+Even if original file is deleted → data still exists.
+
+Soft Link (Symbolic Link)
+A soft link is:
+A shortcut or pointer to another file
+It only stores:
+Path of original file
+If original file is deleted:
+soft link breaks
+
+Hard Link	Same person having 2 names
+Soft Link	Shortcut icon on desktop
+
+
+
+100
+
+50-60
+
+
+head -60 fil1 | tail -10
+
+
+rwx  r-x  r-x
+
+
+
+getfacl(Get File Access Control Lists) --used to display the detailed file or directory permissions that go beyond the traditional rwxrwxrwx (owner, group, others) restrictions.
